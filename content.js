@@ -10,7 +10,7 @@ let cardNP = document.querySelectorAll('.card');
 let levelPicker = [];
 let hpCharacters = [];
 let searchString = "";
-
+let something;
 
 
 function checkLevel(data) {
@@ -48,6 +48,7 @@ searchBar.addEventListener('keyup', (e) => {
     seachN(searchString)
   
   console.log(e);
+  document.querySelector(".sidebar").classList.remove("open");
   }
 });
 
@@ -67,7 +68,7 @@ const displayCharacters = (characters) => {
   //Tạo biến htmlString để chứa các thẻ tạo ra từ mảng obj truyền vào (characters)
   const htmlString = characters.map((character) => {
       return `
-            <div class="card">
+            <div class="card ${'n'+character.id}">
         <div class="card-content">
           <div class="card-top ${character.trinhdo.toLowerCase()}-level">
             <div class="card-title-box">
@@ -97,7 +98,7 @@ const displayCharacters = (characters) => {
             </div>
             <div class="card-content">${character.cachdung}.</div>
           </div>
-          <div class="card-bottom card-hidden">
+          <div class="card-bottom">
             <div class="card-use ${character.trinhdo.toLowerCase()}-box">
               <span>Ví dụ</span>
             </div>
@@ -115,53 +116,67 @@ const displayCharacters = (characters) => {
   cardNP = document.querySelectorAll('.card');
   for (var i = 0; i < cardNP.length; i++) {
     cardNP[i].addEventListener("click", function (e) {
-      console.log(this);
+      var cardSelect = this.classList[1].match(/\d/g).join("");
+
+      console.log(cardSelect);
+      this.classList.toggle("card-big");
+      var cardNotSelect = document.querySelectorAll(`.card:not(.${this.classList[1]})`);
+      for (var i=0; i<cardNotSelect.length; i++){
+        cardNotSelect[i].classList.toggle("card-hidden");
+      }
+      
       this.innerHTML =
         `<div class="card-content">
-      <div class="card-top ${character.trinhdo.toLowerCase()}-level">
+      <div class="card-top ${hpCharacters[cardSelect-1].trinhdo.toLowerCase()}-level">
         <div class="card-title-box">
-          <h3 class="card-title">${character.ten}</h3>
+          <h3 class="card-title">${hpCharacters[cardSelect-1].ten}</h3>
         </div>
         <div class="card-language">
           <img
-            src="img/${character.trinhdo.toLowerCase()}.jpg"
+            src="img/${hpCharacters[cardSelect-1].trinhdo.toLowerCase()}.jpg"
             alt=""
             class="card-language-avatar"
           />
           <div class="card-language-info">
             <div class="card-language-top">
               <ion-icon name="language-outline"></ion-icon>
-              <h4 class="card-language-name">${character.nghia}
+              <h4 class="card-language-name">${hpCharacters[cardSelect-1].nghia}
             </div>
             <div class="card-language-game">
               <ion-icon name="chatbubbles-outline"></ion-icon>
-              <span>Dùng trong văn ${character.dungodau}</span>
+              <span>Dùng trong văn ${hpCharacters[cardSelect-1].dungodau}</span>
             </div>
           </div>
         </div>
       </div>
       <div class="card-bottom">
-        <div class="card-use ${character.trinhdo.toLowerCase()}-box">
+        <div class="card-use ${hpCharacters[cardSelect-1].trinhdo.toLowerCase()}-box">
           <span>Cách dùng</span>
         </div>
-        <div class="card-content">${character.cachdung}.</div>
+        <div class="card-content">${hpCharacters[cardSelect-1].cachdung}.</div>
       </div>
-      <div class="card-bottom card-hidden">
-        <div class="card-use ${character.trinhdo.toLowerCase()}-box">
-          <span>Ví dụ</span>
+      <div class="card-bottom">
+        <div class="card-use ${hpCharacters[cardSelect-1].trinhdo.toLowerCase()}-box">
+          <span>Cấu trúc</span>
+        </div>
+        <div class="card-content">${hpCharacters[cardSelect-1].cautruc}.</div>
+      </div>
+      <div class="card-bottom">
+        <div class="card-use ${hpCharacters[cardSelect-1].trinhdo.toLowerCase()}-box">
+          <span>Ví dụ 1</span>
         </div>
         <div class="card-content">
-          <span class="example-1">${character.vidu1}</span>
-          ${character.nghiavd1}
+          <span class="example-1">${hpCharacters[cardSelect-1].vidu1}</span>
+          ${hpCharacters[cardSelect-1].nghiavd1}
           </div>
       </div>
-      <div class="card-bottom card-hidden">
-        <div class="card-use ${character.trinhdo.toLowerCase()}-box">
-          <span>Ví dụ</span>
+      <div class="card-bottom">
+        <div class="card-use ${hpCharacters[cardSelect-1].trinhdo.toLowerCase()}-box">
+          <span>Ví dụ 2</span>
         </div>
         <div class="card-content">
-          <span class="example-1">${character.vidu1}</span>
-          ${character.nghiavd1}
+          <span class="example-1">${hpCharacters[cardSelect-1].vidu2}</span>
+          ${hpCharacters[cardSelect-1].nghiavd2}
           </div>
       </div>
     </div>`
